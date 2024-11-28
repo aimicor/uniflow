@@ -30,8 +30,8 @@ import kotlinx.coroutines.flow.StateFlow
 /**
  * Base interface for Uni-Directional Flow ViewModels
  */
-interface Uniflow<EV : Event, ST : UiState, EF : SideEffect> {
-    val uiState: StateFlow<ST>
-    val sideEffect: Flow<EF>
-    fun handleEvent(event: EV)
+interface Uniflow<EVENT, STATE, EFFECT> {
+    val uiState: StateFlow<STATE>
+    val sideEffect: Flow<EFFECT>
+    fun handleEvent(event: EVENT)
 }

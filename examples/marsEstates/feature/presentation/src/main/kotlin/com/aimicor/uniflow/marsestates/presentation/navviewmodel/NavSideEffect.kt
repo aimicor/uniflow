@@ -25,9 +25,8 @@ SOFTWARE.
 */
 
 import com.aimicor.navcompose.common.NavComposableSpec
-import com.aimicor.uniflow.SideEffect
 
-sealed class NavSideEffect : SideEffect {
+sealed class NavSideEffect {
     data object Close : NavSideEffect()
     data class GoToScreen(
         val to: NavComposableSpec

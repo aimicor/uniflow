@@ -24,8 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import com.aimicor.uniflow.SideEffect
-
-sealed class MarsEstateSideEffect : SideEffect {
+sealed class MarsEstateSideEffect {
     data object Close: MarsEstateSideEffect()
 }

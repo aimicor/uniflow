@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.Flow
  * Flow extension for collecting Flow values taking Activity lifecycle
  * into account - stops collecting when the app is in background. Based on
  * [androidx.lifecycle.compose.collectAsStateWithLifecycle]
- * Convenient for collecting [SideEffect] values.
+ * Convenient for collecting Side-Effect values.
  */
 @SuppressLint("ComposableNaming")
 @Composable

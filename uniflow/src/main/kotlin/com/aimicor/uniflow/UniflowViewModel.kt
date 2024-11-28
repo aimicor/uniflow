@@ -41,21 +41,21 @@ import kotlinx.coroutines.launch
  * https://developer.android.com/topic/architecture/ui-layer#why-use-udf
  * https://proandroiddev.com/mvi-architecture-with-kotlin-flows-and-channels-d36820b2028d
  */
-abstract class UniflowViewModel<EV : Event, ST : UiState, EF : SideEffect>(
-    private val initialUiState: ST
-) :  Uniflow<EV, ST, EF>, ViewModel() {
+abstract class UniflowViewModel<EVENT, STATE, EFFECT>(
+    private val initialUiState: STATE
+) :  Uniflow<EVENT, STATE, EFFECT>, ViewModel() {
 
-    private val _uiState: MutableStateFlow<ST> by lazy { MutableStateFlow(initialUiState) }
+    private val _uiState: MutableStateFlow<STATE> by lazy { MutableStateFlow(initialUiState) }
     override val uiState by lazy { _uiState.asStateFlow() }
 
-    private val _sideEffect: Channel<EF> = Channel()
+    private val _sideEffect: Channel<EFFECT> = Channel()
     override val sideEffect by lazy { _sideEffect.receiveAsFlow() }
 
-    protected fun setUiState(reduce: ST.() -> ST) {
+    protected fun setUiState(reduce: STATE.() -> STATE) {
         _uiState.value = _uiState.value.reduce()
     }
 
-    protected fun sendSideEffect(builder: () -> EF) {
+    protected fun sendSideEffect(builder: () -> EFFECT) {
         viewModelScope.launch {
             _sideEffect.send(builder())
         }

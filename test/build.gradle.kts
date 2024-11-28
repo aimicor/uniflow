@@ -3,9 +3,13 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.jvm)
 }
 
+kotlin {
+    jvmToolchain(libs.versions.android.kotlin.jvm.get().toInt())
+}
+
 java {
-    sourceCompatibility = Config.javaVersion
-    targetCompatibility = Config.javaVersion
+    sourceCompatibility = JavaVersion.valueOf(libs.versions.java.get())
+    targetCompatibility = JavaVersion.valueOf(libs.versions.java.get())
 }
 
 dependencies{

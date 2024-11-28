@@ -27,4 +27,5 @@ SOFTWARE.
 /**
  * Base interface for side effects from the ViewModel to the UI controller.
  */
+@Deprecated("No longer necessary")
 interface SideEffect

@@ -6,6 +6,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertNotNull
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -32,12 +33,12 @@ internal class UniflowViewModelTest {
     fun `Given sendAction called Then the action has to be sent`() = runTest {
         sut.handleEvent(EventDummy.SendAction)
         sut.sideEffect.test {
-            assert(awaitItem() is ActionDummy)
+            assertNotNull(awaitItem())
         }
     }
 
     private class UniflowViewModelImpl :
-        UniflowViewModel<EventDummy, UiStateFake, SideEffect>(UiStateFake()) {
+        UniflowViewModel<EventDummy, UiStateFake, ActionDummy>(UiStateFake()) {
         override fun handleEvent(event: EventDummy) {
             when (event) {
                 is EventDummy.ChangeName -> {
@@ -59,14 +60,13 @@ internal class UniflowViewModelTest {
         }
     }
 
-    private sealed class EventDummy : Event {
+    private sealed class EventDummy {
         data object ChangeName : EventDummy()
         data object ChangeAddress : EventDummy()
         data object SendAction : EventDummy()
     }
 
-    private data class UiStateFake(val name: String = "Dominic", val address: String = "Flat 1") :
-        UiState
+    private data class UiStateFake(val name: String = "Dominic", val address: String = "Flat 1")
 
-    private object ActionDummy : SideEffect
+    private object ActionDummy
 }

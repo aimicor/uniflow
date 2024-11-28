@@ -40,18 +40,19 @@ dependencies {
 ## Usage
 ### Define some events, states and side-effects
 ```kotlin  
-sealed class MyEvent: Event {  
+sealed class MyEvent {  
     data object OnCloseClicked : MyEvent()
     data class OnDataSent(val data: Stuff) : MyEvent()  
     // more events...
 }
 
-data class MyUiState(  
-    val moreData: OtherStuff,
-    // more state values... 
-): UiState
+sealed class MyUiState {
+    data object Loading: MyUiState()
+    data class Failed(val msg: String): MyUiState()
+    data class Success(val stuffToDisplay: MyDisplayData): MyUiState()
+}
 
-sealed class MySideEffect : SideEffect {  
+sealed class MySideEffect {  
     data object Close : MySideEffect()
     // more effects...
 }
@@ -70,7 +71,7 @@ class MyViewModel : MyUniflow, UniflowViewModel<MyEvent, MyUiState, MySideEffect
         when (event) {  
             MyEvent.OnCloseClicked -> sendSideEffect { MySideEffect.Close }  
             is MyEvent.OnDataSent -> setUiState { 
-                copy(moreData = getOtherStuffFrom(event.data)
+                copy(stuffToDisplay = getOtherStuffFrom(event.data))
             }
             // more events...
         }
@@ -84,9 +85,13 @@ fun MyUiContent(
     state: MyUiState,  
     event: (MyEvent) -> Unit  
 ) {
-    Text(state.moreData.headingString)
+    when (state) {
+        is MyUiState.Loading -> { /* show a spinner */ }
+        is MyUiState.Failed -> { /* show fail message */ }
+        is MyUiState.Success -> { /* render my MyDisplayData */ }
+    }
     // ...
-    Button(onClick = { event(MyEvent.OnDataSent(someStuff) } )
+    Button(onClick = { event(MyEvent.OnDataSent(someStuff)) } )
     // ...
 }
 
@@ -99,8 +104,9 @@ fun MyController(
 ) {  
     val state by uniflow.uiState.collectAsStateWithLifecycle()  
     BackHandler { uniflow.handleEvent(MyEvent.OnCloseClicked) }  
-    MyUiContent(state, uniflow::handleEvent)  
-  
+    MyUiContent(state, uniflow::handleEvent)
+
+    val localContext = LocalContext.current
     uniflow.sideEffect.collectWithLifecycle { effect ->  
         when (effect) {  
             MySideEffect.Close -> (localContext as? Activity)?.finish()

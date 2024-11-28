@@ -24,9 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import com.aimicor.uniflow.UiState
-
 internal data class NavUiState(
     val currentRoute: String?,
     val topBarHeading: String
-): UiState
+)

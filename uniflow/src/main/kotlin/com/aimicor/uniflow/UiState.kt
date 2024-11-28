@@ -27,4 +27,5 @@ SOFTWARE.
 /**
  * Base interface for states from the ViewModel to the UI
  */
+@Deprecated("No longer necessary")
 interface UiState

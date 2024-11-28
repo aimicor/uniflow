@@ -27,4 +27,5 @@ SOFTWARE.
 /**
  * Base interface for events from the UI to the ViewModel
  */
+@Deprecated("No longer necessary")
 interface Event

@@ -25,9 +25,8 @@ SOFTWARE.
 */
 
 import com.aimicor.navcompose.common.NavComposableSpec
-import com.aimicor.uniflow.Event
 
-internal sealed class NavEvent: Event {
+internal sealed class NavEvent {
     data class GoToScaffold(val screenKey: NavComposableSpec) : NavEvent()
     data class GoToFullScreen(val screenKey: NavComposableSpec) : NavEvent()
     data class JumpToScaffold(val screenKey: NavComposableSpec) : NavEvent()
